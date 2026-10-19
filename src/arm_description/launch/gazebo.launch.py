@@ -1,16 +1,12 @@
 import os
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import IncludeLaunchDescription, DeclareLaunchArgument
+from launch.actions import IncludeLaunchDescription
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration
 from launch_ros.actions import Node
 import xacro
 
-
 # Tell Gazebo where to find the arm_description package meshes
-from ament_index_python.packages import get_package_share_directory
-import os
 ws_share_dir = os.path.dirname(get_package_share_directory('arm_description'))
 if 'GZ_SIM_RESOURCE_PATH' in os.environ:
     os.environ['GZ_SIM_RESOURCE_PATH'] += ':' + ws_share_dir
@@ -23,15 +19,18 @@ def generate_launch_description():
     xacro_file = os.path.join(pkg_share, 'urdf', 'arm.urdf.xacro')
     sdf_file = os.path.join(pkg_share, 'urdf', 'target_cube.sdf')
     cam_sdf_file = os.path.join(pkg_share, 'urdf', 'overhead_camera.sdf')
-    
+    world_file = os.path.join(pkg_share, 'worlds', 'factory_world.sdf')
+    if not os.path.exists(world_file):
+        world_file = os.path.expanduser('~/arm_ws/src/arm_description/worlds/factory_world.sdf')
+
     robot_description_raw = xacro.process_file(xacro_file).toxml()
 
-    # Gazebo Sim launch
+    # Launch Gazebo Sim with the Industrial Factory & Workbench World
     gazebo_launch = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
             os.path.join(get_package_share_directory('ros_gz_sim'), 'launch', 'gz_sim.launch.py')
         ),
-        launch_arguments={'gz_args': 'empty.sdf -r'}.items()
+        launch_arguments={'gz_args': f'{world_file} -r'}.items()
     )
 
     # Robot State Publisher
@@ -45,7 +44,7 @@ def generate_launch_description():
         }]
     )
 
-    # Spawn Robot in Gazebo
+    # Spawn Robot on top of the Workbench Table (Tabletop is at Z=0.0m)
     spawn_robot = Node(
         package='ros_gz_sim',
         executable='create',
@@ -53,7 +52,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # Spawn Target Cube on Pedestal (Pickup coordinates: X=0.18, Y=0.11, Z=0.115)
+    # Spawn Target Cube on Pedestal (on top of the table)
     spawn_cube = Node(
         package='ros_gz_sim',
         executable='create',
@@ -61,6 +60,7 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Spawn Overhead Vision Camera above the Workbench Table
     spawn_camera = Node(
         package='ros_gz_sim',
         executable='create',
@@ -68,7 +68,7 @@ def generate_launch_description():
         output='screen'
     )
 
-    # ROS-GZ Bridge for Clock
+    # ROS-GZ Bridge for Clock and Camera
     bridge = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',

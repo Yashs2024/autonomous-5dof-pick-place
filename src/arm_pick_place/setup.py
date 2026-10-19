@@ -25,6 +25,7 @@ setup(
         'console_scripts': [
             'pick_place_node = arm_pick_place.pick_place_node:main',
             'vision_pick_place_node = arm_pick_place.vision_pick_place_node:main',
+            'yolov8_pick_place_node = arm_pick_place.yolov8_pick_place_node:main',
             'servo_serial_bridge = arm_pick_place.servo_serial_bridge:main',
         ],
     },

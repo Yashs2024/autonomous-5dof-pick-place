@@ -1,0 +1,282 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <world name="robot_factory_world">
+    <physics name="1ms" type="ignored">
+      <max_step_size>0.001</max_step_size>
+      <real_time_factor>1.0</real_time_factor>
+    </physics>
+
+    <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
+    <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
+    <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
+    <plugin filename="gz-sim-contact-system" name="gz::sim::systems::Contact"/>
+
+    <light type="directional" name="factory_sun">
+      <cast_shadows>true</cast_shadows>
+      <pose>2 1 6 0 0 0</pose>
+      <diffuse>0.9 0.9 0.9 1</diffuse>
+      <specular>0.3 0.3 0.3 1</specular>
+      <direction>-0.2 -0.1 -0.9</direction>
+    </light>
+
+    <!-- 1. CONCRETE FACTORY FLOOR (at Z = -0.75m) -->
+    <model name="factory_floor">
+      <static>true</static>
+      <pose>0 0 -0.75 0 0 0</pose>
+      <link name="floor_link">
+        <collision name="floor_col">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>20 20</size>
+            </plane>
+          </geometry>
+        </collision>
+        <visual name="floor_vis">
+          <geometry>
+            <plane>
+              <normal>0 0 1</normal>
+              <size>16 16</size>
+            </plane>
+          </geometry>
+          <material>
+            <ambient>0.28 0.30 0.32 1</ambient>
+            <diffuse>0.32 0.34 0.36 1</diffuse>
+            <specular>0.1 0.1 0.1 1</specular>
+          </material>
+        </visual>
+        <visual name="safety_line_front">
+          <pose>1.1 0 0.002 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 2.2 0.002</size></box>
+          </geometry>
+          <material>
+            <ambient>0.95 0.75 0.0 1</ambient>
+            <diffuse>0.95 0.75 0.0 1</diffuse>
+          </material>
+        </visual>
+        <visual name="safety_line_back">
+          <pose>-0.9 0 0.002 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 2.2 0.002</size></box>
+          </geometry>
+          <material>
+            <ambient>0.95 0.75 0.0 1</ambient>
+            <diffuse>0.95 0.75 0.0 1</diffuse>
+          </material>
+        </visual>
+        <visual name="safety_line_left">
+          <pose>0.1 1.1 0.002 0 0 0</pose>
+          <geometry>
+            <box><size>2.06 0.06 0.002</size></box>
+          </geometry>
+          <material>
+            <ambient>0.95 0.75 0.0 1</ambient>
+            <diffuse>0.95 0.75 0.0 1</diffuse>
+          </material>
+        </visual>
+        <visual name="safety_line_right">
+          <pose>0.1 -1.1 0.002 0 0 0</pose>
+          <geometry>
+            <box><size>2.06 0.06 0.002</size></box>
+          </geometry>
+          <material>
+            <ambient>0.95 0.75 0.0 1</ambient>
+            <diffuse>0.95 0.75 0.0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 2. INDUSTRIAL ROBOT WORKBENCH TABLE (Top Surface Flush at Z = 0.0m) -->
+    <model name="robot_workbench">
+      <static>true</static>
+      <link name="table_link">
+        <collision name="tabletop_col">
+          <pose>0.15 0.0 -0.025 0 0 0</pose>
+          <geometry>
+            <box><size>1.20 1.00 0.05</size></box>
+          </geometry>
+        </collision>
+        <visual name="tabletop_vis">
+          <pose>0.15 0.0 -0.025 0 0 0</pose>
+          <geometry>
+            <box><size>1.20 1.00 0.05</size></box>
+          </geometry>
+          <material>
+            <ambient>0.75 0.75 0.75 1</ambient>
+            <diffuse>0.82 0.82 0.82 1</diffuse>
+            <specular>0.2 0.2 0.2 1</specular>
+          </material>
+        </visual>
+        <visual name="frame_apron">
+          <pose>0.15 0.0 -0.07 0 0 0</pose>
+          <geometry>
+            <box><size>1.14 0.94 0.04</size></box>
+          </geometry>
+          <material>
+            <ambient>0.12 0.22 0.35 1</ambient>
+            <diffuse>0.15 0.28 0.45 1</diffuse>
+          </material>
+        </visual>
+        <visual name="leg_fl">
+          <pose>0.68 0.43 -0.40 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.06 0.70</size></box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.25 0.38 1</ambient>
+            <diffuse>0.15 0.28 0.45 1</diffuse>
+          </material>
+        </visual>
+        <visual name="leg_fr">
+          <pose>0.68 -0.43 -0.40 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.06 0.70</size></box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.25 0.38 1</ambient>
+            <diffuse>0.15 0.28 0.45 1</diffuse>
+          </material>
+        </visual>
+        <visual name="leg_bl">
+          <pose>-0.38 0.43 -0.40 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.06 0.70</size></box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.25 0.38 1</ambient>
+            <diffuse>0.15 0.28 0.45 1</diffuse>
+          </material>
+        </visual>
+        <visual name="leg_br">
+          <pose>-0.38 -0.43 -0.40 0 0 0</pose>
+          <geometry>
+            <box><size>0.06 0.06 0.70</size></box>
+          </geometry>
+          <material>
+            <ambient>0.15 0.25 0.38 1</ambient>
+            <diffuse>0.15 0.28 0.45 1</diffuse>
+          </material>
+        </visual>
+        <visual name="lower_shelf">
+          <pose>0.15 0.0 -0.58 0 0 0</pose>
+          <geometry>
+            <box><size>1.08 0.88 0.025</size></box>
+          </geometry>
+          <material>
+            <ambient>0.25 0.27 0.30 1</ambient>
+            <diffuse>0.30 0.32 0.35 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+
+    <!-- 3. FACTORY WAREHOUSE WALLS, RACKS & BOLLARDS -->
+    <model name="factory_building">
+      <static>true</static>
+      <link name="structure_link">
+        <visual name="back_wall">
+          <pose>-4.5 0 1.75 0 0 0</pose>
+          <geometry>
+            <box><size>0.2 12.0 5.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.42 0.45 0.48 1</ambient>
+            <diffuse>0.48 0.50 0.53 1</diffuse>
+          </material>
+        </visual>
+        <visual name="left_wall">
+          <pose>0 6.0 1.75 0 0 0</pose>
+          <geometry>
+            <box><size>9.0 0.2 5.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.42 0.45 0.48 1</ambient>
+            <diffuse>0.48 0.50 0.53 1</diffuse>
+          </material>
+        </visual>
+        <visual name="right_wall">
+          <pose>0 -6.0 1.75 0 0 0</pose>
+          <geometry>
+            <box><size>9.0 0.2 5.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.42 0.45 0.48 1</ambient>
+            <diffuse>0.48 0.50 0.53 1</diffuse>
+          </material>
+        </visual>
+        <visual name="rack_shelf_1">
+          <pose>-0.25 3.0 -0.15 0 0 0</pose>
+          <geometry>
+            <box><size>2.6 0.85 0.05</size></box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.4 0.0 1</ambient>
+            <diffuse>0.95 0.45 0.05 1</diffuse>
+          </material>
+        </visual>
+        <visual name="rack_shelf_2">
+          <pose>-0.25 3.0 0.65 0 0 0</pose>
+          <geometry>
+            <box><size>2.6 0.85 0.05</size></box>
+          </geometry>
+          <material>
+            <ambient>0.9 0.4 0.0 1</ambient>
+            <diffuse>0.95 0.45 0.05 1</diffuse>
+          </material>
+        </visual>
+        <visual name="cargo_box_1">
+          <pose>-0.8 3.0 0.12 0 0 0.1</pose>
+          <geometry>
+            <box><size>0.5 0.5 0.48</size></box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.48 0.30 1</ambient>
+            <diffuse>0.72 0.54 0.34 1</diffuse>
+          </material>
+        </visual>
+        <visual name="cargo_box_2">
+          <pose>0.3 3.0 0.10 0 0 -0.05</pose>
+          <geometry>
+            <box><size>0.55 0.45 0.44</size></box>
+          </geometry>
+          <material>
+            <ambient>0.65 0.48 0.30 1</ambient>
+            <diffuse>0.72 0.54 0.34 1</diffuse>
+          </material>
+        </visual>
+        <visual name="plc_cabinet">
+          <pose>-1.2 -2.2 0.25 0 0 0.4</pose>
+          <geometry>
+            <box><size>0.6 0.8 2.0</size></box>
+          </geometry>
+          <material>
+            <ambient>0.6 0.62 0.65 1</ambient>
+            <diffuse>0.65 0.68 0.70 1</diffuse>
+          </material>
+        </visual>
+        <visual name="bollard_1">
+          <pose>1.05 1.05 -0.30 0 0 0</pose>
+          <geometry>
+            <cylinder><radius>0.045</radius><length>0.90</length></cylinder>
+          </geometry>
+          <material>
+            <ambient>0.95 0.75 0.0 1</ambient>
+            <diffuse>0.95 0.75 0.0 1</diffuse>
+          </material>
+        </visual>
+        <visual name="bollard_2">
+          <pose>1.05 -1.05 -0.30 0 0 0</pose>
+          <geometry>
+            <cylinder><radius>0.045</radius><length>0.90</length></cylinder>
+          </geometry>
+          <material>
+            <ambient>0.95 0.75 0.0 1</ambient>
+            <diffuse>0.95 0.75 0.0 1</diffuse>
+          </material>
+        </visual>
+      </link>
+    </model>
+  </world>
+</sdf>

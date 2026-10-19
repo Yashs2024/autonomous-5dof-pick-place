@@ -19,8 +19,8 @@ def generate_launch_description():
     # 2. Launch 3D Dynamic IK Vision Pick-and-Place Node (after Gazebo boots)
     vision_node = Node(
         package='arm_pick_place',
-        executable='vision_pick_place_node',
-        name='vision_pick_and_place_node',
+        executable='yolov8_pick_place_node',
+        name='yolov8_pick_and_place_node',
         output='screen'
     )
 
