@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<sdf version="1.8">
+  <model name="target_cube">
+    <link name="cube_link">
+      <inertial>
+        <mass>0.015</mass>
+        <inertia>
+          <ixx>0.000002</ixx><ixy>0</ixy><ixz>0</ixz>
+          <iyy>0.000002</iyy><iyz>0</iyz><izz>0.000002</izz>
+        </inertia>
+      </inertial>
+      <collision name="collision">
+        <geometry><box><size>0.028 0.028 0.028</size></box></geometry>
+        <surface>
+          <friction>
+            <ode><mu>50.0</mu><mu2>50.0</mu2></ode>
+          </friction>
+          <contact>
+            <ode><kp>100000.0</kp><kd>10.0</kd><min_depth>0.001</min_depth></ode>
+          </contact>
+        </surface>
+      </collision>
+      <visual name="visual">
+        <geometry><box><size>0.028 0.028 0.028</size></box></geometry>
+        <material>
+          <ambient>0.95 0.1 0.1 1</ambient>
+          <diffuse>0.95 0.1 0.1 1</diffuse>
+        </material>
+      </visual>
+    </link>
+  </model>
+</sdf>
