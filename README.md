@@ -1,5 +1,6 @@
 # Autonomous 5-DOF Robotic Arm: YOLOv8n & OpenCV Vision-Guided Pick & Place
 
+[![ROS 2 Jazzy CI](https://github.com/Yashs2024/autonomous-5dof-pick-place/actions/workflows/ros2_ci.yml/badge.svg)](https://github.com/Yashs2024/autonomous-5dof-pick-place/actions/workflows/ros2_ci.yml)
 ![ROS 2 Jazzy](https://img.shields.io/badge/ROS_2-Jazzy_Jalisco-22314E?logo=ros&logoColor=white)
 ![Gazebo Harmonic](https://img.shields.io/badge/Gazebo-Harmonic_(v8)-FF6F00?logo=gazebo&logoColor=white)
 ![YOLOv8](https://img.shields.io/badge/Ultralytics-YOLOv8n-00FFFF)

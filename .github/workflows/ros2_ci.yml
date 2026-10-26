@@ -1,0 +1,55 @@
+name: ROS 2 Jazzy CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  colcon_build:
+    name: Build & Verify (Ubuntu 24.04 + ROS 2 Jazzy)
+    runs-on: ubuntu-24.04
+    container:
+      image: ros:jazzy-ros-base-noble
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          path: arm_ws
+
+      - name: Install System & Python Dependencies
+        run: |
+          apt-get update
+          apt-get install -y \
+            python3-colcon-common-extensions \
+            python3-rosdep \
+            python3-opencv \
+            python3-serial \
+            ros-jazzy-xacro
+
+      - name: Validate URDF/Xacro & Gazebo SDF XML Syntax
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          python3 -c "
+          import glob, xml.etree.ElementTree as ET
+          for sdf in glob.glob('arm_ws/src/**/*.sdf', recursive=True):
+              ET.parse(sdf)
+              print('Validated SDF:', sdf)
+          "
+          xacro arm_ws/src/arm_description/urdf/arm.urdf.xacro > /tmp/parsed_arm.urdf
+          python3 -c "import xml.etree.ElementTree as ET; ET.parse('/tmp/parsed_arm.urdf'); print('Validated URDF/Xacro successfully!')"
+
+      - name: Build ROS 2 Workspace with Colcon
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          cd arm_ws
+          colcon build --symlink-install --event-handlers console_cohesion+
+
+      - name: Verify Installed ROS 2 Packages & Executables
+        run: |
+          source /opt/ros/jazzy/setup.bash
+          source arm_ws/install/setup.bash
+          ros2 pkg list | grep -E "arm_description|arm_moveit_config|arm_pick_place"
