@@ -1,4 +1,4 @@
-<img width="800" height="423" alt="demofor5dof-ezgif com-speed" src="https://github.com/user-attachments/assets/b8ba1679-8bcb-4c2c-8109-ba3cc73b1d36" />
+
 # Autonomous 5-DOF Robotic Arm: YOLOv8n & OpenCV Vision-Guided Pick & Place
 
 [![ROS 2 Jazzy CI](https://github.com/Yashs2024/autonomous-5dof-pick-place/actions/workflows/ros2_ci.yml/badge.svg)](https://github.com/Yashs2024/autonomous-5dof-pick-place/actions/workflows/ros2_ci.yml)
@@ -37,6 +37,8 @@ This project solves the complete autonomous pipeline inside an industrial workce
 * **Dual-Mode Perception (YOLOv8n + OpenCV):** An overhead RGB camera mounted above the workbench streams live frames over `ros_gz_bridge` to `yolov8_pick_place_node.py` (or `vision_pick_place_node.py`), displaying live inference FPS, localizing targets in 3D $(X, Y, Z)$, and classifying whether the object rests on the raised pedestal or directly on the workbench surface.
 * **Planning & Control:** An analytical 5-DOF IK solver computes collision-free joint trajectories for **Hover**, **Grasp**, **Lift**, and **Place** states, driving Gazebo's `gz_ros2_control` `JointTrajectoryController` servers.
 * **Sim-to-Real Telemetry:** A serial bridge node subscribes to `/joint_states` and streams calibrated PWM degree packets (`<S1,S2,S3,S4,S5,S6>`) over USB at 115200 baud to mirror simulated motions on physical hobby servos.
+
+* <img width="800" height="423" alt="demofor5dof-ezgif com-speed" src="https://github.com/user-attachments/assets/b8ba1679-8bcb-4c2c-8109-ba3cc73b1d36" />
 
 ---
 
