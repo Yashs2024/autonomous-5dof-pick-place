@@ -1,3 +1,4 @@
+<img width="800" height="423" alt="demofor5dof-ezgif com-speed" src="https://github.com/user-attachments/assets/b8ba1679-8bcb-4c2c-8109-ba3cc73b1d36" />
 # Autonomous 5-DOF Robotic Arm: YOLOv8n & OpenCV Vision-Guided Pick & Place
 
 [![ROS 2 Jazzy CI](https://github.com/Yashs2024/autonomous-5dof-pick-place/actions/workflows/ros2_ci.yml/badge.svg)](https://github.com/Yashs2024/autonomous-5dof-pick-place/actions/workflows/ros2_ci.yml)
